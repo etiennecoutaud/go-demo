@@ -9,7 +9,7 @@ services:
 - docker:dind
 
 before_script:
-  - go get glide
+  - go get github.com/Masterminds/glide
   - glide install
 
 stages:
