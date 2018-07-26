@@ -1,0 +1,17 @@
+variables:
+  # Please edit to your GitLab project
+  REPO_NAME: gitlab.com/namespace/project
+
+stages:
+    - test
+    - docker
+
+test:
+    stage: test
+    script:
+      - go test
+
+compile:
+    stage: docker
+    script:
+      - docker info
