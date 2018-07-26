@@ -20,5 +20,4 @@ test:
 compile:
     stage: docker
     script:
-      - docker build
-      - docker push
+      - docker info
