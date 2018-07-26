@@ -8,6 +8,10 @@ variables:
 services:
 - docker:dind
 
+before_script:
+  - go get glide
+  - glide install
+
 stages:
     - test
     - docker

@@ -1,0 +1,8 @@
+package: github.com/etiennecoutaud/go-demo
+import:
+- package: github.com/gorilla/mux
+  version: ^1.6.2
+- package: github.com/prometheus/client_golang
+  version: ^0.9.0-pre1
+  subpackages:
+  - prometheus/promhttp
