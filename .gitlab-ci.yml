@@ -23,4 +23,4 @@ build_image:
       - docker:dind
     stage: docker
     script:
-      - docker info
+      - docker build -t go-demo:latest .
