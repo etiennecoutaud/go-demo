@@ -28,12 +28,32 @@ build_image:
       - docker build -t registry.gitlab.com/etiennecoutaud1/go-demo .
       - docker push registry.gitlab.com/etiennecoutaud1/go-demo
 
+deploy_fb:
+  stage: deploy
+  script:
+    - echo "Deploy to CI_BUILD_REF_NAME server"
+  environment:
+    name: $CI_BUILD_REF_NAME
+    url: https://CI_BUILD_REF_NAME.example.com
+  only:
+  - /^fb-.*
+
 deploy_dev:
   stage: deploy
   script:
     - echo "Deploy to dev server"
   environment:
     name: dev
-    url: https://staging.example.com
+    url: https://dev.example.com
   only:
   - master
+
+deploy_prod:
+  stage: deploy
+  script:
+    - echo "Deploy to prod server"
+  environment:
+    name: prod
+    url: https://prod.example.com
+  only:
+  - /^release-.*
