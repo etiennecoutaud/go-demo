@@ -2,6 +2,7 @@ variables:
   REPO_NAME: gitlab.com/namespace/project
 
 stages:
+  - apply
   - test
   - docker
   - deploy
@@ -25,10 +26,10 @@ build_image:
     stage: docker
     script:
       - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" registry.gitlab.com
-      - docker build -t registry.gitlab.com/etiennecoutaud1/go-demo .
-      - docker push registry.gitlab.com/etiennecoutaud1/go-demo
+      - docker build -t registry.gitlab.com/etiennecoutaud1/go-demo:$CI_COMMIT_SHA .
+      - docker push registry.gitlab.com/etiennecoutaud1/go-demo:$CI_COMMIT_SHA
 
-deploy_fb:
+deploy_feature_branch:
   stage: deploy
   script:
     - echo "Deploy to CI_BUILD_REF_NAME server"
@@ -56,4 +57,11 @@ deploy_prod:
     name: prod
     url: https://prod.example.com
   only:
-  - /^release.*$/
+  - /^release-.*/@etiennecoutaud1/go-demo
+
+apply_config:
+  stage: apply
+  script:
+    - echo "Apply"
+  only:
+  - paths: "/manifests"
