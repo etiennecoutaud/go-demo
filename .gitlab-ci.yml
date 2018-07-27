@@ -23,6 +23,6 @@ build_image:
       - docker:dind
     stage: docker
     script:
-      - docker login -u 'etiennecoutaud' -p 'zpvT2W!]6J9%' registry.gitlab.com
+      - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" registry.gitlab.com
       - docker build -t registry.gitlab.com/etiennecoutaud1/go-demo .
       - docker push registry.gitlab.com/etiennecoutaud1/go-demo
