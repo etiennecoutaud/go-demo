@@ -36,7 +36,7 @@ deploy_fb:
     name: $CI_BUILD_REF_NAME
     url: https://CI_BUILD_REF_NAME.example.com
   only:
-  - /^fb-.*
+  - /^fb.*$
 
 deploy_dev:
   stage: deploy
@@ -56,4 +56,4 @@ deploy_prod:
     name: prod
     url: https://prod.example.com
   only:
-  - /^release-.*
+  - /^release.*$/
