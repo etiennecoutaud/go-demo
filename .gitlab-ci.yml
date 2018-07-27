@@ -64,4 +64,5 @@ apply_config:
   script:
     - echo "Apply"
   only:
-  - paths: "/manifests"
+  - paths: 
+    - "^manifests/*"
