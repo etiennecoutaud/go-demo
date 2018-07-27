@@ -4,6 +4,7 @@ variables:
 stages:
   - test
   - docker
+  - deploy
 
 test_app:
     before_script:
@@ -26,3 +27,13 @@ build_image:
       - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" registry.gitlab.com
       - docker build -t registry.gitlab.com/etiennecoutaud1/go-demo .
       - docker push registry.gitlab.com/etiennecoutaud1/go-demo
+
+deploy_dev:
+  stage: deploy
+  script:
+    - echo "Deploy to dev server"
+  environment:
+    name: dev
+    url: https://staging.example.com
+  only:
+  - master
