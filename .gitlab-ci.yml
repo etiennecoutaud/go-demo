@@ -36,7 +36,7 @@ deploy_fb:
     name: $CI_BUILD_REF_NAME
     url: https://CI_BUILD_REF_NAME.example.com
   only:
-  - /^fb.*$
+  - /^fb-.*/@etiennecoutaud1/go-demo
 
 deploy_dev:
   stage: deploy
