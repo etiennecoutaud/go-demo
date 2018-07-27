@@ -2,7 +2,6 @@ variables:
   REPO_NAME: gitlab.com/namespace/project
 
 stages:
-  - apply
   - test
   - docker
   - deploy
@@ -18,6 +17,8 @@ test_app:
     stage: test
     script:
       - go test
+    only:
+    - /^fb-.*/@etiennecoutaud1/go-demo
 
 build_image:
     image: docker:latest
@@ -28,6 +29,36 @@ build_image:
       - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" registry.gitlab.com
       - docker build -t registry.gitlab.com/etiennecoutaud1/go-demo:$CI_COMMIT_SHA .
       - docker push registry.gitlab.com/etiennecoutaud1/go-demo:$CI_COMMIT_SHA
+    only:
+    - /^fb-.*/@etiennecoutaud1/go-demo
+
+
+image_master:
+    image: docker:latest
+    services:
+      - docker:dind
+    stage: docker
+    script:
+      - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" registry.gitlab.com
+      - docker pull registry.gitlab.com/etiennecoutaud1/go-demo:$CI_COMMIT_BEFORE_SHA
+      - docker tag  registry.gitlab.com/etiennecoutaud1/go-demo:$CI_COMMIT_BEFORE_SHA registry.gitlab.com/etiennecoutaud1/go-demo:master
+      - docker push registry.gitlab.com/etiennecoutaud1/go-demo:master
+    only:
+    - master
+
+image_prod:
+    image: docker:latest
+    services:
+      - docker:dind
+    stage: docker
+    script:
+      - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" registry.gitlab.com
+      - docker pull registry.gitlab.com/etiennecoutaud1/go-demo:master
+      - docker tag  registry.gitlab.com/etiennecoutaud1/go-demo:master registry.gitlab.com/etiennecoutaud1/go-demo:CI_BUILD_REF_NAME
+      - docker push registry.gitlab.com/etiennecoutaud1/go-demo:CI_BUILD_REF_NAME
+    only:
+    - /^release-.*/@etiennecoutaud1/go-demo
+
 
 deploy_feature_branch:
   stage: deploy
@@ -58,11 +89,3 @@ deploy_prod:
     url: https://prod.example.com
   only:
   - /^release-.*/@etiennecoutaud1/go-demo
-
-apply_config:
-  stage: apply
-  script:
-    - echo "Apply"
-  only:
-  - paths: 
-    - "^manifests/*"
