@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"io"
 	"log"
@@ -25,8 +26,23 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	for _, p := range os.Environ() {
 		msg = msg + fmt.Sprintf("%s\n", p)
 	}
-	io.WriteString(w, msg)
 	generateLog(r.Host)
+
+	mysql, m := checkConnectionDB()
+	msg = msg + "Check MYSQL Connection => " + mysql + "\n"
+	msg += msg + m
+	io.WriteString(w, msg)
+
+}
+
+func checkConnectionDB() (string, string) {
+	con := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", os.Getenv("ARTIFAKT_MYSQL_USER"), os.Getenv("ARTIFAKT_MYSQL_PASSWORD"), os.Getenv("ARTIFAKT_MYSQL_HOST"), os.Getenv("ARTIFAKT_MYSQL_PORT"), os.Getenv("ARTIFAKT_MYSQL_DATABASE_NAME"))
+	db, err := sql.Open("mysql", con)
+	defer db.Close()
+	if err != nil {
+		return "ko", err.Error()
+	}
+	return "ok", con
 }
 
 func generateLog(msg string) {
