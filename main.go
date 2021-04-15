@@ -40,7 +40,7 @@ func checkConnectionDB() (string, string) {
 	db, err := sql.Open("mysql", con)
 	defer db.Close()
 	if err != nil {
-		return "ko", err.Error()
+		return "ko", con
 	}
 	return "ok", con
 }
