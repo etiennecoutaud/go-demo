@@ -4,6 +4,6 @@ COPY . .
 
 RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-s" -o go-demo
 
-EXPOSE 80
+EXPOSE 8080
 USER 1001
 CMD ["./entrypoint.sh"]

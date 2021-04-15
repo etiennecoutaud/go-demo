@@ -66,5 +66,5 @@ func main() {
 	r.Handle("/metrics", promhttp.Handler())
 	r.HandleFunc("/", homeHandler)
 
-	log.Fatal(http.ListenAndServe(":80", r))
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
