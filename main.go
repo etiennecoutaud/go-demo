@@ -28,9 +28,9 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	generateLog(r.Host)
 
-	mysql, m := checkConnectionDB()
-	msg = msg + "Check MYSQL Connection => " + mysql + "\n"
-	msg += msg + m
+	//mysql, m := checkConnectionDB()
+	//msg = msg + "Check MYSQL Connection => " + mysql + "\n"
+	//msg += msg + m
 	io.WriteString(w, msg)
 
 }
